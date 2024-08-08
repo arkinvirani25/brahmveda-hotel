@@ -61,16 +61,46 @@ export const updateHotel = async (data: any) => {
       meta_description: data.meta_data.meta_description,
       meta_keywords: data.meta_data.meta_keywords,
       hotel_facilities: JSON.stringify(data.hotel_facilities),
+      hotel_rules: JSON.stringify(data.hotel_rules),
+      hotel_most_popular_facilities: JSON.stringify(data.hotel_most_popular_facilities),
+      surroundings: JSON.stringify(data.surroundings),
+      restaurants: JSON.stringify(data.restaurants),
+      total_reviews: data.total_reviews,
+      hotel_score: data.hotel_score,
+      checkIn_time: data.hotel_rules.find((rule: any) => rule.title === "Check-in").content,
+      checkOut_time: data.hotel_rules.find((rule: any) => rule.title === "Check-out").content,
     };
 
     const { data: hotelData, error } = await supabase
       .from("hotel")
       .update(hotelPayload)
-      .eq("id", data.hotel_id).select();
-    console.log("error => ", error);
+      .eq("id", data.hotel_id)
+      .select();
+    console.error("error => ", error);
 
     if (error) {
       return { message: error.message, success: false };
+    }
+
+    for (const faq of data.hotel_faqs) {
+      const faqPayload = {
+        hotel_id: data.hotel_id,
+        question: faq.question,
+        answer: faq.answer,
+      };
+      const { error } = await supabase.from("hotel_faqs").insert(faqPayload).select();
+      console.error("error => ", error);
+    }
+
+    for (const review of data.hotel_reviews) {
+      const reviewPayload = {
+        hotel_id: data.hotel_id,
+        review: review.review,
+        country: review.country,
+        name: review.name,
+      };
+      const { error } = await supabase.from("hotel_reviews").insert(reviewPayload).select();
+      console.error("error => ", error);
     }
     return { success: true, data: hotelData, message: "Hotel Added successfully" };
   } catch (error: any) {

@@ -78,13 +78,13 @@ const AddHotel = () => {
         ...data.data,
         hotel_id: params.get("hotel_id"),
       });
-      if (data.data.hotel_media) {
-        const imageUrls = data.data.hotel_media;
-        for (const imageUrl of imageUrls) {
-          // Download the image
-          await uploadImages(imageUrl);
-        }
-      }
+      // if (data.data.hotel_media) {
+      //   const imageUrls = data.data.hotel_media;
+      //   for (const imageUrl of imageUrls) {
+      //     // Download the image
+      //     await uploadImages(imageUrl);
+      //   }
+      // }
       if (data.data.rooms) {
         const rooms = data.data.rooms;
         for (const room of rooms) {
@@ -92,11 +92,11 @@ const AddHotel = () => {
             ...room,
             hotel_id: params.get("hotel_id"),
           });
-          if (room.image_urls && roomDetails) {
-            for (const url of room.image_urls) {
-              url && uploadImages(url, roomDetails[0]?.id);
-            }
-          }
+          // if (room.image_urls && roomDetails) {
+          //   for (const url of room.image_urls) {
+          //     url && uploadImages(url, roomDetails[0]?.id);
+          //   }
+          // }
         }
       }
       console.log("updatedHotelData => ", updatedHotelData);
