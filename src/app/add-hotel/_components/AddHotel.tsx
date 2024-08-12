@@ -31,7 +31,7 @@ const AddHotel = () => {
     setUrl(value);
   };
 
-  const uploadImages = async (imageUrl: string, room_id?: string) => {
+  const uploadImages = async (imageUrl: string, hotel_id: string, room_id?: string) => {
     // Download the image
     const response = await axios.get(imageUrl, { responseType: "blob" });
     const imageBlob = response.data;
@@ -39,9 +39,8 @@ const AddHotel = () => {
 
     if (imageBlob.size > 0) {
       // Upload the image to Supabase
-      const path = `${room_id ? "room_images" : "hotel_images"}/${Math.floor(
-        Math.random() * 1000
-      )}${imageName}`;
+      const path = `hotels/${hotel_id}${room_id ? "/rooms/" + room_id : ""}/images/${imageName}`;
+
       const { data, error } = await supabase.storage
         .from(process.env.NEXT_PUBLIC_S3_BUCKET!)
         .upload(path, imageBlob);
@@ -55,7 +54,7 @@ const AddHotel = () => {
 
         const imagePayload: any = {
           link: fileUrl.data?.signedUrl!,
-          hotel_id: params.get("hotel_id"),
+          hotel_id: hotel_id,
           name: imageName,
         };
 
@@ -78,13 +77,13 @@ const AddHotel = () => {
         ...data.data,
         hotel_id: params.get("hotel_id"),
       });
-      // if (data.data.hotel_media) {
-      //   const imageUrls = data.data.hotel_media;
-      //   for (const imageUrl of imageUrls) {
-      //     // Download the image
-      //     await uploadImages(imageUrl);
-      //   }
-      // }
+      if (data.data.hotel_media) {
+        const imageUrls = data.data.hotel_media;
+        for (const imageUrl of imageUrls) {
+          // Download the image
+          await uploadImages(imageUrl, params.get("hotel_id")!);
+        }
+      }
       if (data.data.rooms) {
         const rooms = data.data.rooms;
         for (const room of rooms) {
@@ -92,11 +91,11 @@ const AddHotel = () => {
             ...room,
             hotel_id: params.get("hotel_id"),
           });
-          // if (room.image_urls && roomDetails) {
-          //   for (const url of room.image_urls) {
-          //     url && uploadImages(url, roomDetails[0]?.id);
-          //   }
-          // }
+          if (room.image_urls && roomDetails) {
+            for (const url of room.image_urls) {
+              url && uploadImages(url, params.get("hotel_id")!, roomDetails[0]?.id);
+            }
+          }
         }
       }
       console.log("updatedHotelData => ", updatedHotelData);
