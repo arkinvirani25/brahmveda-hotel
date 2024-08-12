@@ -11,6 +11,7 @@ import { FormInput } from "@/components/common/FormInput";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { initialValue, validationSchema } from "@/constants/login";
+import React from "react";
 
 const Login: React.FC = () => {
   const router = useRouter();
@@ -86,7 +87,7 @@ const Login: React.FC = () => {
           </Button>
         </div>
         <div className="text-center mt-4 text-sm text-gray-500 dark:text-gray-400">
-          Don't have an account?&nbsp;
+          Don&apos;t have an account?&nbsp;
           <Link href="/signup" className="text-blue-500 hover:underline">
             Sign Up
           </Link>

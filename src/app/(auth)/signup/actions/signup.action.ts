@@ -27,14 +27,14 @@ export const signUp = async (values: ISignUp) => {
       //   },
       // },
     });
-    console.log("signUpError", signUpError);
+    // console.log("signUpError", signUpError);
     if (signUpError) {
       return { error: signUpError.message };
     }
-    console.log("signUpData", signUpData);
+    // console.log("signUpData", signUpData);
     // Associate the user with the hotel
-    const userId = signUpData?.user?.id;
-    console.log("userId", userId);
+    // const userId = signUpData?.user?.id;
+    // console.log("userId", userId);
 
     // const { error: userError } = await supabase
     //   .from("users")

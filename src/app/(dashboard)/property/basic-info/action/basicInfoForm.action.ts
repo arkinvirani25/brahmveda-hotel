@@ -30,12 +30,12 @@ export const updateHotelBasicInformation = async (data: IHotelBasicInfo) => {
       updated_ip: updated_user_ip,
       updated_at: new Date(),
     };
-    const { data: updatedData } = await supabase
+    await supabase
       .from("hotel")
       .update(payload)
       .eq("id", data.id)
       .select();
-    console.log("updatedData:", updatedData);
+    // console.log("updatedData:", updatedData);
   } catch (error: any) {
     return { message: error.message, success: false };
   }

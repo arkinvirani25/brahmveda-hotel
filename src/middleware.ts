@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { NextResponse } from "next/server";
+// import { getToken } from "next-auth/jwt";
 export { default } from "next-auth/middleware";
 
 export const config = {
@@ -7,7 +7,7 @@ export const config = {
   matcher: ["/((?!api|_next/static|_next/image|auth|images|favicon.ico).*)"],
 };
 
-export async function middleware(request: NextRequest) {
+export async function middleware() {
   // const token = await getToken({ req: request });
   // const url = request.nextUrl.clone();
   // const pathname = request.nextUrl.pathname;

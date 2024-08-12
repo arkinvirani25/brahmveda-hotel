@@ -33,7 +33,7 @@ const SelectTemplate = () => {
       const { message, success, data } = await insertHotelData({
         template_id: selectedTemplateId,
       });
-      console.log("data => ",data);
+      // console.log("data => ",data);
       if (success && data) {
         router.push("/add-hotel?hotel_id=" + data[0]?.id);
       }

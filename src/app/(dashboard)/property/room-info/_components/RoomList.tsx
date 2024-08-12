@@ -43,14 +43,14 @@ const RoomList = () => {
         "https://images.unsplash.com/photo-1660731513683-4cb0c9ac09b8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGhvdGVsJTIwcm9vbXxlbnwwfHwwfHx8MA%3D%3D",
     },
   ];
-  const handleDelete = (roomId: string) => {
-    console.log("handleDelete roomId:", roomId);
-  };
+  // const handleDelete = (roomId: string) => {
+  //   // console.log("handleDelete roomId:", roomId);
+  // };
 
-  const handleEdit = (roomId: string) => {
-    setOpen(true);
-    console.log("handleEdit roomId:", roomId);
-  };
+  // const handleEdit = (roomId: string) => {
+  //   setOpen(true);
+  //   // console.log("handleEdit roomId:", roomId);
+  // };
   const [open, setOpen] = useState(false);
 
   return (
@@ -84,7 +84,7 @@ const RoomList = () => {
                     <h2 className="text-xl font-semibold mb-2">{room.name}</h2>
                   </div>
                   <div className="absolute top-2 right-2 flex space-x-2">
-                    <button
+                    {/* <button
                       onClick={(e) => {
                         // e.stopPropagation();
                         handleEdit(room.id);
@@ -92,8 +92,8 @@ const RoomList = () => {
                       className="bg-blue-500 text-white p-1 rounded"
                     >
                       Edit
-                    </button>
-                    <button
+                    </button> */}
+                    {/* <button
                       onClick={(e) => {
                         // e.stopPropagation();
                         handleDelete(room.id);
@@ -101,7 +101,7 @@ const RoomList = () => {
                       className="bg-red-500 text-white p-1 rounded"
                     >
                       Delete
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               ))}

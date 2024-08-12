@@ -82,7 +82,7 @@ const BasicInfoForm = () => {
   const getHotelData = async () => {
     const { data } = await getHotelDataById("6a2d7d10-7482-429f-a068-d412dbc64fc5");
     const hotel = data?.[0];
-    console.log("hotel:", hotel);
+    // console.log("hotel:", hotel);
     reset({
       propertyName: hotel.name,
       address: hotel.address,
@@ -120,7 +120,7 @@ const BasicInfoForm = () => {
 
   const updateBasicInformation = async (values: IHotelBasicInfo) => {
     const logo = await setPoster();
-    const updateHotel = await updateHotelBasicInformation({
+    await updateHotelBasicInformation({
       ...values,
       id: "6a2d7d10-7482-429f-a068-d412dbc64fc5",
       logo: logo!,

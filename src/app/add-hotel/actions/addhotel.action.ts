@@ -3,7 +3,7 @@
 import { IHotelMedia } from "@/interface";
 import { createClient } from "@/lib/supabase/supabaseServer";
 import { AItogether, convertToSlug } from "@/lib/utils";
-import axios from "axios";
+// import axios from "axios";
 import { cookies } from "next/headers";
 import os from "os";
 

@@ -152,7 +152,7 @@ const AddRoomForm = (props: any) => {
                       <input {...getInputProps()} />
                       <div className="flex w-full content-center justify-center h-[150px]">
                         <p className="flex justify-center items-center">
-                          Drag 'n' drop a room images here, or click to select a file
+                          Drag &apos;n&apos; drop a room images here, or click to select a file
                         </p>
                       </div>
                     </div>

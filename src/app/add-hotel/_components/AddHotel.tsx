@@ -2,14 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { fetchHotelData, insertRoomDetails, updateHotel } from "../actions/addhotel.action";
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/lib/supabase/supabaseClient";
 import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { testHotelData } from "@/constants";
+import { useSearchParams } from "next/navigation";
+// import { testHotelData } from "@/constants";
 import { Copy } from "lucide-react";
 
 const AddHotel = () => {
@@ -62,7 +62,7 @@ const AddHotel = () => {
         const { error } = await supabase
           .from(`${room_id ? "hotel_room_media" : "hotel_media"}`)
           .insert(payload);
-        console.log("error =>", error);
+        console.error("error =>", error);
       }
     }
   };
@@ -71,7 +71,7 @@ const AddHotel = () => {
     setLoading(true);
     const data = await fetchHotelData(url);
     // const data = testHotelData;
-    console.log("data:", data);
+    // console.log("data:", data);
     if (data) {
       const { data: updatedHotelData, message } = await updateHotel({
         ...data.data,
@@ -98,7 +98,7 @@ const AddHotel = () => {
           }
         }
       }
-      console.log("updatedHotelData => ", updatedHotelData);
+      // console.log("updatedHotelData => ", updatedHotelData);
       if (updatedHotelData) {
         setLoading(false);
         setPreviewLink(`http://localhost:3000/${updatedHotelData[0]?.slug}`);

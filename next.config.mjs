@@ -10,6 +10,9 @@ const nextConfig = {
       "ffjsefuelcovhjlawewh.supabase.co",
     ],
   },
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
 };
 
 export default nextConfig;
