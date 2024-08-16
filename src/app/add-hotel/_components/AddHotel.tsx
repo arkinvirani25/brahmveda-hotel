@@ -71,7 +71,6 @@ const AddHotel = () => {
     setLoading(true);
     const data = await fetchHotelData(url);
     // const data = testHotelData;
-    // console.log("data:", data);
     if (data) {
       const { data: updatedHotelData, message } = await updateHotel({
         ...data.data,
