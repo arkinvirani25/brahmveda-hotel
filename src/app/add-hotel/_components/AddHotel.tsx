@@ -62,7 +62,7 @@ const AddHotel = () => {
         const { error } = await supabase
           .from(`${room_id ? "hotel_room_media" : "hotel_media"}`)
           .insert(payload);
-        console.error("error =>", error);
+        console.log("error =>", error);
       }
     }
   };
@@ -71,6 +71,7 @@ const AddHotel = () => {
     setLoading(true);
     const data = await fetchHotelData(url);
     // const data = testHotelData;
+    console.log("data:", data);
     if (data) {
       const { data: updatedHotelData, message } = await updateHotel({
         ...data.data,
@@ -108,74 +109,87 @@ const AddHotel = () => {
     }
   };
 
+  const fetchData = async () => {
+    const response = await fetch("/api/scrape");
+    console.log("response => ", response);
+
+    const result = await response.json();
+    console.log("result => ", result);
+  };
+
   return (
-    <div className="flex flex-col items-center p-4 sm:p-8 space-y-8">
-      <h1 className="text-2xl sm:text-3xl font-bold text-center">
-        Where else is your property listed?
-      </h1>
-      <Card className="w-full max-w-sm sm:max-w-md">
-        <CardContent className="my-4">
-          <div className="text-sm text-muted-foreground text-center sm:text-left">
-            If your property is listed on Booking.com, you can speed up the registration process by
-            importing it directly.
-          </div>
-          <div className="font-bold my-6 text-center sm:text-left">
-            Import property details from Booking.com
-          </div>
-          <div className="my-2">
-            <div className="text-sm my-1 text-center sm:text-left">
-              Paste the link to your booking.com listing
+    <>
+      <div className="flex flex-col items-center p-4 sm:p-8 space-y-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-center">
+          Where else is your property listed?
+        </h1>
+        <Card className="w-full max-w-sm sm:max-w-md">
+          <CardContent className="my-4">
+            <div className="text-sm text-muted-foreground text-center sm:text-left">
+              If your property is listed on Booking.com, you can speed up the registration process
+              by importing it directly.
             </div>
-            <div className="flex flex-col sm:flex-row sm:items-center">
-              <Input
-                type="text"
-                className="mr-0 sm:mr-2 mb-2 sm:mb-0"
-                placeholder="https://www.booking.com/hotel/in/*******"
-                onChange={(e: any) => hotelLink(e.target.value)}
-              />
-              {loading ? (
-                <div className="balls">
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                </div>
-              ) : (
-                <Button onClick={updateHotelData}>Apply</Button>
-              )}
+            <div className="font-bold my-6 text-center sm:text-left">
+              Import property details from Booking.com
             </div>
-          </div>
-          <div className="my-2 text-center sm:text-left">
-            <div className="text-sm text-muted-foreground">Example link:</div>
-            <div className="text-sm text-muted-foreground">
-              https://www.booking.com/hotel/in/*******
+            <div className="my-2">
+              <div className="text-sm my-1 text-center sm:text-left">
+                Paste the link to your booking.com listing
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center">
+                <Input
+                  type="text"
+                  className="mr-0 sm:mr-2 mb-2 sm:mb-0"
+                  placeholder="https://www.booking.com/hotel/in/*******"
+                  onChange={(e: any) => hotelLink(e.target.value)}
+                />
+                {loading ? (
+                  <div className="balls">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                ) : (
+                  <Button onClick={updateHotelData}>Apply</Button>
+                )}
+              </div>
             </div>
+            <div className="my-2 text-center sm:text-left">
+              <div className="text-sm text-muted-foreground">Example link:</div>
+              <div className="text-sm text-muted-foreground">
+                https://www.booking.com/hotel/in/*******
+              </div>
+            </div>
+            <div className="text-sm flex flex-col sm:flex-row sm:items-center">
+              <div className="font-bold">NOTE:-&nbsp;</div>
+              <div className="text-muted-foreground">&quot;in&quot; indicates the country</div>
+            </div>
+          </CardContent>
+        </Card>
+        {previewLink && (
+          <div className="flex items-center w-full max-w-sm sm:max-w-md">
+            <input
+              ref={inputRef}
+              type="text"
+              value={previewLink}
+              placeholder="Enter a preview link"
+              className="flex-grow p-2 border-none outline-none border border-black"
+            />
+            <Copy onClick={handleCopyClick} />
+            <Button
+              onClick={() => {
+                window.open(previewLink, "_blank");
+              }}
+            >
+              Preview
+            </Button>
           </div>
-          <div className="text-sm flex flex-col sm:flex-row sm:items-center">
-            <div className="font-bold">NOTE:-&nbsp;</div>
-            <div className="text-muted-foreground">&quot;in&quot; indicates the country</div>
-          </div>
-        </CardContent>
-      </Card>
-      {previewLink && (
-        <div className="flex items-center w-full max-w-sm sm:max-w-md">
-          <input
-            ref={inputRef}
-            type="text"
-            value={previewLink}
-            placeholder="Enter a preview link"
-            className="flex-grow p-2 border-none outline-none border border-black"
-          />
-          <Copy onClick={handleCopyClick} />
-          <Button
-            onClick={() => {
-              window.open(previewLink, "_blank");
-            }}
-          >
-            Preview
-          </Button>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+      <button onClick={fetchData} className="border">
+        Get Data
+      </button>
+    </>
   );
 };
 

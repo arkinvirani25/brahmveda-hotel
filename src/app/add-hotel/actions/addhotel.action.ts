@@ -2,10 +2,11 @@
 
 import { IHotelMedia } from "@/interface";
 import { createClient } from "@/lib/supabase/supabaseServer";
-import { AItogether, convertToSlug } from "@/lib/utils";
+import { getAddressDetails, convertToSlug } from "@/lib/utils";
 // import axios from "axios";
 import { cookies } from "next/headers";
 import os from "os";
+import Together from "together-ai";
 
 export const fetchHotelData = async (url: string) => {
   try {
@@ -38,7 +39,7 @@ export const insertHotelMedia = async (data: IHotelMedia) => {
 export const updateHotel = async (data: any) => {
   try {
     const supabase = createClient(cookies());
-    const aiResult = await AItogether(data.address);
+    const aiResult = await getAddressDetails(data.address);
     const address = aiResult && JSON.parse(aiResult[0]?.message?.content || "");
     const country = await getIdByName("geo_country", address.country);
     const ipAddress = await getIPv4Address();
@@ -163,6 +164,30 @@ export async function getIPv4Address() {
     }
   }
   return ipAddress ? ipAddress[0] : undefined;
+}
+
+export async function getRoomDescription(htmlContent: string) {
+  const together = new Together({
+    apiKey: process.env.TOGETHER_API_KEY,
+  });
+
+  if (htmlContent) {
+    const response = await together.chat.completions.create({
+      messages: [
+        {
+          role: "user",
+          content:
+            `Extract the room_description and size of the room from this content: "${htmlContent}" ` +
+            `and format it as like this json: {"description": "room_description", "size": "room_size"}.` +
+            `Output should be only json object Nothing else than that.neither description nor Note.`,
+        },
+      ],
+      model: "meta-llama/Llama-3-70b-chat-hf",
+    });
+
+    return response.choices[0].message?.content;
+  }
+  return null;
 }
 
 // if (hotelDetails) {

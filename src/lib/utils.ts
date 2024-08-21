@@ -34,7 +34,7 @@ export function convertToSlug(hotelName: string): string {
     .trim(); // Remove leading/trailing spaces
 }
 
-export async function AItogether(address: string) {
+export async function getAddressDetails(address: string) {
   const together = new Together({
     apiKey: process.env.TOGETHER_API_KEY,
   });
@@ -44,7 +44,7 @@ export async function AItogether(address: string) {
       messages: [
         {
           role: "user",
-          content: `Extract the state from postal code, country, city, and postal code from this address: "${address}" and format it as like this json:  {"state": "Goa", "country": "India", "postal_code": "403511", "city": "Bardez", "address":  remaining address like country city postal code and state remove from address string}.Output should be only json object Nothing else than that.neither description nor Note.`,
+          content: `Extract the state, country, city, and postal code from this address: "${address}" and format it as like this json:  {"state": "Goa", "country": "India", "postal_code": "403511", "city": "Bardez", "address":  remaining address like country city postal code and state remove from address string}.Output should be only json object Nothing else than that.neither description nor Note.`,
         },
       ],
       model: "meta-llama/Llama-3-70b-chat-hf",
