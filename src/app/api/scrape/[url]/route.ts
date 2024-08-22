@@ -12,7 +12,7 @@ export async function GET(req: NextRequest, { params }: { params: { url: string 
     if (!url) {
       return NextResponse.json({ message: "URL is required" }, { status: 400 });
     }
-    const browser = await puppeteer.launch({ headless: false, args: ["--start-maximized"] });
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
     const { width, height } = await page.evaluate(() => {
