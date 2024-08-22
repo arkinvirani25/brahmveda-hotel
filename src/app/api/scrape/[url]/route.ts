@@ -1,10 +1,17 @@
-// pages/api/scrape.js
 import { getRoomDescription } from "@/app/add-hotel/actions/addhotel.action";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer";
 
-export async function GET() {
+export async function GET(req: NextRequest, { params }: { params: { url: string } }) {
+  console.log("params => ", params);
+
+  const url = params.url;
+  console.log("url => ", url);
+
   try {
+    if (!url) {
+      return NextResponse.json({ message: "URL is required" }, { status: 400 });
+    }
     const browser = await puppeteer.launch({ headless: false, args: ["--start-maximized"] });
     const page = await browser.newPage();
 
@@ -16,7 +23,7 @@ export async function GET() {
     });
 
     await page.setViewport({ width, height });
-    await page.goto("https://www.booking.com/hotel/in/the-vanson-pride-new-delhi.en-gb.html", {
+    await page.goto(url, {
       waitUntil: "domcontentloaded",
     });
 
@@ -30,7 +37,7 @@ export async function GET() {
 
     for (let index = 0; index < roomElements.length; index++) {
       const newPage = await browser.newPage();
-      await newPage.goto("https://www.booking.com/hotel/in/the-vanson-pride-new-delhi.en-gb.html", {
+      await newPage.goto(url, {
         waitUntil: "domcontentloaded",
       });
       const roomElements = await newPage.$$(roomElementsSelector);

@@ -110,7 +110,7 @@ const AddHotel = () => {
   };
 
   const fetchData = async () => {
-    const response = await fetch("/api/scrape");
+    const response = await fetch(`/api/scrape/${encodeURIComponent(url)}`);
     console.log("response => ", response);
 
     const result = await response.json();
